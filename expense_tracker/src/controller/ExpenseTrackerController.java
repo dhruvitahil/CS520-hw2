@@ -39,7 +39,7 @@ public class ExpenseTrackerController {
     }
     
     Transaction t = new Transaction(amount, category);
-    model.addTransaction(t);
+    model.addTransaction(amount, category);
     view.getTableModel().addRow(new Object[]{t.getAmount(), t.getCategory(), t.getTimestamp()});
     refresh();
     return true;
