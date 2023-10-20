@@ -5,13 +5,17 @@ import java.util.List;
 
 public class ExpenseTrackerModel {
 
-  public List<Transaction> transactions;
+  // Implemented encapsulation and immutability by using keywords private and final
+  private final List<Transaction> transactions;
 
   public ExpenseTrackerModel() {
     transactions = new ArrayList<>(); 
   }
 
-  public void addTransaction(Transaction t) {
+
+  //The method interanlly creates an object instead of passing the object as a parameter to prevnt external data modification
+  public void addTransaction(double amount, String category) {
+    Transaction t = new Transaction(amount, category);
     transactions.add(t);
   }
 
@@ -20,7 +24,9 @@ public class ExpenseTrackerModel {
   }
 
   public List<Transaction> getTransactions() {
-    return transactions;
+
+    //Impleted immutability by return an unmodifable list of transactions
+    return Collections.unmodifiableList(transactions);
   }
 
 }

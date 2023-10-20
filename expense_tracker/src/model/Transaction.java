@@ -6,9 +6,10 @@ import java.util.List;
 
 public class Transaction {
 
-  public double amount;
-  public String category;
-  public String timestamp;
+  // Implemented immutability and encapsulation by using keywords private and final 
+  private final double amount;
+  private final String category;
+  private final String timestamp;
 
   public Transaction(double amount, String category) {
     this.amount = amount;
@@ -20,21 +21,15 @@ public class Transaction {
     return amount;
   }
 
-  public void setAmount(double amount) {
-    this.amount = amount;
-  }
-
   public String getCategory() {
     return category;
   }
 
-  public void setCategory(String category) {
-    this.category = category; 
-  }
-  
   public String getTimestamp() {
     return timestamp;
   }
+
+  //We removed the setter methods making the class immutable and initialised amount and category in the constructor by making changes in the addTransaction method  
 
   private String generateTimestamp() {
     SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm");  
