@@ -34,6 +34,26 @@ public class ExpenseTrackerApp {
       }
     });
 
+
+     // Handle apply CATEGORY filter button clicks
+    view.getFilterCategoryButton().addActionListener(e -> {
+      String category = view.getCategoryField();
+      
+      // Call controller to add transaction
+      controller.applyCategoryFilter(category);
+
+    });
+
+     // Handle apply AMOUNT filter button clicks
+    view.getFilterAmountButton().addActionListener(e -> {
+      double maxAmount = view.getAmountField();
+      
+      // Call controller to add transaction
+      controller.applyAmountFilter(maxAmount);
+
+    });
+
+
   }
 
 }

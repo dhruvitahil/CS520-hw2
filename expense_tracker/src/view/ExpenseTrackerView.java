@@ -4,6 +4,8 @@ import javax.swing.*;
 import javax.swing.JFormattedTextField.AbstractFormatterFactory;
 import javax.swing.table.DefaultTableModel;
 
+import javax.swing.table.DefaultTableCellRenderer;
+
 import controller.InputValidation;
 
 import java.awt.*;
@@ -16,19 +18,24 @@ public class ExpenseTrackerView extends JFrame {
 
   private JTable transactionsTable;
   private JButton addTransactionBtn;
+  //new buttons added
+  private JButton filterAmountButton;
+  private JButton filterCategoryButton;
   private JFormattedTextField amountField;
   private JTextField categoryField;
   private DefaultTableModel model;
-  
+  private List<Integer> filterTransactions;
 
   public ExpenseTrackerView() {
     setTitle("Expense Tracker"); // Set title
-    setSize(600, 400); // Make GUI larger
+    setSize(1000, 1000); // Make GUI larger
 
     String[] columnNames = {"serial", "Amount", "Category", "Date"};
     this.model = new DefaultTableModel(columnNames, 0);
 
     addTransactionBtn = new JButton("Add Transaction");
+    filterAmountButton = new JButton("Filter by Amount"); //adding Jbutton
+    filterCategoryButton = new JButton("Filter by Category");
 
     // Create UI components
     JLabel amountLabel = new JLabel("Amount:");
@@ -43,6 +50,25 @@ public class ExpenseTrackerView extends JFrame {
 
     // Create table
     transactionsTable = new JTable(model);
+
+    //highlighting the filtered rows
+    transactionsTable.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
+          @Override
+          public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
+                                                        boolean hasFocus, int row, int column) {
+              Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+              if (getFilteredTransaction() != null) {
+                boolean isPresent = getFilteredTransaction().contains(row);
+                if(isPresent){
+                  c.setBackground(new Color(173, 255, 168)); // Light green
+                }
+               else {
+                  c.setBackground(table.getBackground());
+              }
+            }
+              return c;
+          }
+      });
   
     // Layout components
     JPanel inputPanel = new JPanel();
@@ -51,9 +77,14 @@ public class ExpenseTrackerView extends JFrame {
     inputPanel.add(categoryLabel); 
     inputPanel.add(categoryField);
     inputPanel.add(addTransactionBtn);
+    //adding in layout
+    inputPanel.add(filterAmountButton);
+    inputPanel.add(filterCategoryButton);
   
     JPanel buttonPanel = new JPanel();
     buttonPanel.add(addTransactionBtn);
+    buttonPanel.add(filterAmountButton); //adding on JPanel
+    buttonPanel.add(filterCategoryButton);
   
     // Add panels to frame
     add(inputPanel, BorderLayout.NORTH);
@@ -61,7 +92,7 @@ public class ExpenseTrackerView extends JFrame {
     add(buttonPanel, BorderLayout.SOUTH);
   
     // Set frame properties
-    setSize(400, 300);
+    setSize(650, 750);
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     setVisible(true);
   
@@ -91,11 +122,19 @@ public class ExpenseTrackerView extends JFrame {
     }  
   
 
-  
-  
   public JButton getAddTransactionBtn() {
     return addTransactionBtn;
   }
+
+//adding getter method
+  public JButton getFilterAmountButton() {
+        return filterAmountButton;
+  }
+
+  public JButton getFilterCategoryButton() {
+        return filterCategoryButton;
+  }
+
   public DefaultTableModel getTableModel() {
     return model;
   }
@@ -124,5 +163,14 @@ public class ExpenseTrackerView extends JFrame {
 
   public void setCategoryField(JTextField categoryField) {
     this.categoryField = categoryField;
+  }
+
+//getter and setter methods for filtered transaction
+  public List<Integer> getFilteredTransaction() {
+    return filterTransactions;
+  }
+
+  public void setFilteredTransaction(List<Integer> filterTransactions) {
+    this.filterTransactions = filterTransactions;
   }
 }

@@ -1,10 +1,6 @@
 package controller;
-
 import view.ExpenseTrackerView;
-
-import java.util.List;
-
-
+import java.util.*;
 
 import model.ExpenseTrackerModel;
 import model.Transaction;
@@ -12,6 +8,8 @@ public class ExpenseTrackerController {
   
   private ExpenseTrackerModel model;
   private ExpenseTrackerView view;
+  private CategoryFilter cf;
+  private AmountFilter af; 
 
   public ExpenseTrackerController(ExpenseTrackerModel model, ExpenseTrackerView view) {
     this.model = model;
@@ -44,6 +42,23 @@ public class ExpenseTrackerController {
     refresh();
     return true;
   }
-  
-  // Other controller methods
+
+//method added to apply CATEGORY filter
+public void applyCategoryFilter(String category) {
+    List<Transaction> transaction = model.getTransactions();
+    cf = new CategoryFilter(category);
+    List<Integer> categoryFilteredTransactions = cf.filter(transaction);
+    view.setFilteredTransaction(categoryFilteredTransactions);
+    refresh();
+}
+
+//method added to apply AMOUNT filter
+public void applyAmountFilter(double maxAmount) {
+    List<Transaction> transaction = model.getTransactions();
+    af = new AmountFilter(maxAmount);
+    List<Integer> amountFilteredTransactions = af.filter(transaction);
+    view.setFilteredTransaction(amountFilteredTransactions);
+    refresh();
+}
+
 }
